@@ -32,4 +32,4 @@ def encrypt_data(data_string):
     return cipher.encrypt(data_string.encode('utf-8'))
 
 def decrypt_data(encrypted_data):
-    return cipher.decrypt(encrypted_data.decode('utf-8'))
+    return cipher.decrypt(encrypted_data).decode('utf-8')
