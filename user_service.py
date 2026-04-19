@@ -5,7 +5,7 @@ import security_utils
 def register_user(username, plain_password, phone_number):
     print(f"\n[*] Đang xử lý đăng ký cho user: {username}")
 
-    is_strong, msg = security_utils.check_passworf_strong(plain_password)
+    is_strong, msg = security_utils.check_password_strong(plain_password)
     if not is_strong:
         print(f"     [!] Lỗi: {msg}")
         return
