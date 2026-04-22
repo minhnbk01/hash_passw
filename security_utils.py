@@ -1,5 +1,7 @@
 import re
 import bcrypt
+import pyperclip
+import threading
 from cryptography.fernet import Fernet
 from config import SECRET_KEY
 
@@ -43,4 +45,17 @@ def generate_strong_password(length=16):
         password = ''.join(secrets.choice(characters) for i in range(length))
         is_strong, _ = check_password_strong(password)
         if is_strong:
-            return password
+            return password
+
+def clear_clipboard(original_text):
+    if pyperclip.paste() == original_text:
+        pyperclip.copy("")
+        print("\n[i] Clipboard đã tự động xóa mật khẩu để bảo mật.")
+
+def copy_to_clipboard_with_scrub(text, timeout=10):
+    pyperclip.copy(text)
+    print(f"\n[+] Đã sao chép mật khẩu vào clipboard an toàn.")
+    print(f"    Vui lòng Paste (Ctrl+V) vào nơi cần thiết.")
+    print(f"    Mật khẩu sẽ tự động bị xóa khỏi clipboard sau {timeout} giây.")
+    timer = threading.Timer(timeout, clear_clipboard, args=(text,))
+    timer.start()

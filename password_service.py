@@ -72,7 +72,8 @@ def get_password(user_id, service_name):
         decrypted_password = security_utils.decrypt_data(pw_entry['encrypted_password'])
         print(f"\n[+] Thông tin dịch vụ: {service_name}")
         print(f"    Tài khoản: {pw_entry['account_username']}")
-        print(f"    Mật khẩu:  {decrypted_password}")
+        print(f"    Mật khẩu:  ********")
+        security_utils.copy_to_clipboard_with_scrub(decrypted_password)
         return decrypted_password
     except Exception as e:
         print(f"     [!] Lỗi Database: {e}")

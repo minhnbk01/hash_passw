@@ -2,6 +2,7 @@ import sys
 from user_service import register_user, login_user
 from password_service import add_password, get_passwords, get_password, update_password, delete_password
 from security_utils import generate_strong_password
+from virtual_keyboard import get_password_via_vk
 
 def logged_in_menu(user_id):
     while True:
@@ -28,7 +29,12 @@ def logged_in_menu(user_id):
                 password = generate_strong_password()
                 print(f"[i] Mật khẩu được tạo: {password}")
             else:
-                password = input("Nhập mật khẩu: ")
+                vk_choice = input("Sử dụng Bàn phím ảo để chống keylogger? (y/n): ")
+                if vk_choice.lower() == 'y':
+                    password = get_password_via_vk("Nhập Mật Khẩu Dịch Vụ")
+                    print("[i] Đã nhận mật khẩu từ Bàn phím ảo.")
+                else:
+                    password = input("Nhập mật khẩu: ")
             add_password(user_id, service, username, password)
         elif choice == '4':
             service = input("Nhập tên dịch vụ cần cập nhật: ")
@@ -37,7 +43,12 @@ def logged_in_menu(user_id):
                 password = generate_strong_password()
                 print(f"[i] Mật khẩu mới được tạo: {password}")
             else:
-                password = input("Nhập mật khẩu mới: ")
+                vk_choice = input("Sử dụng Bàn phím ảo để chống keylogger? (y/n): ")
+                if vk_choice.lower() == 'y':
+                    password = get_password_via_vk("Nhập Mật Khẩu Mới")
+                    print("[i] Đã nhận mật khẩu từ Bàn phím ảo.")
+                else:
+                    password = input("Nhập mật khẩu mới: ")
             update_password(user_id, service, password)
         elif choice == '5':
             service = input("Nhập tên dịch vụ cần xóa: ")
@@ -61,13 +72,23 @@ def main_menu():
         
         if choice == '1':
             username = input("Nhập username: ")
-            password = input("Nhập password (ít nhất 8 ký tự, có hoa, thường, số, ký tự đặc biệt): ")
+            vk_choice = input("Sử dụng Bàn phím ảo cho mật khẩu để chống keylogger? (y/n): ")
+            if vk_choice.lower() == 'y':
+                password = get_password_via_vk("Nhập Mật Khẩu Đăng Ký")
+                print("[i] Đã nhận mật khẩu từ Bàn phím ảo.")
+            else:
+                password = input("Nhập password (ít nhất 8 ký tự, có hoa, thường, số, ký tự đặc biệt): ")
             phone = input("Nhập số điện thoại: ")
             email = input("Nhập email: ")
             register_user(username, password, phone, email)
         elif choice == '2':
             username = input("Nhập username: ")
-            password = input("Nhập password: ")
+            vk_choice = input("Sử dụng Bàn phím ảo cho mật khẩu để chống keylogger? (y/n): ")
+            if vk_choice.lower() == 'y':
+                password = get_password_via_vk("Nhập Mật Khẩu Đăng Nhập")
+                print("[i] Đã nhận mật khẩu từ Bàn phím ảo.")
+            else:
+                password = input("Nhập password: ")
             user_id = login_user(username, password)
             if user_id:
                 logged_in_menu(user_id)
