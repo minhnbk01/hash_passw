@@ -21,7 +21,7 @@ def check_password_strong(password):
     return True, None
 
 def hash_password(plain_password):
-     return bcrypt.hashpw(plain_password.encode('utf-8'), bcrypt.gensalt(rounds=12))
+     return bcrypt.hashpw(plain_password.encode('utf-8'), bcrypt.gensalt(rounds=16))
 
 def verify_password(plain_password, hashed_password):
     plain_password_bytes = plain_password.encode('utf-8')
@@ -33,3 +33,14 @@ def encrypt_data(data_string):
 
 def decrypt_data(encrypted_data):
     return cipher.decrypt(encrypted_data).decode('utf-8')
+
+import secrets
+import string
+
+def generate_strong_password(length=16):
+    characters = string.ascii_letters + string.digits + "!@#$%^&*(),.?\":{}|<>"
+    while True:
+        password = ''.join(secrets.choice(characters) for i in range(length))
+        is_strong, _ = check_password_strong(password)
+        if is_strong:
+            return password

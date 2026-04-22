@@ -63,7 +63,7 @@ def login_user(username, plain_password):
 
         if not user:
             print("     [!] Không tìm thấy người dùng")
-            return
+            return None
 
         if security_utils.verify_password(plain_password, user['password_hash']):
             print("[+] Đăng nhập thành công")
@@ -71,10 +71,13 @@ def login_user(username, plain_password):
             decrypted_email = security_utils.decrypt_data(user['encrypted_email'])
             print(f"    SĐT: {decrypted_phone}")
             print(f"    Email: {decrypted_email}")
+            return user['id']
         else:
             print("     [!] Sai mật khẩu")
+            return None
     except Exception as e:
         print(f"     [!] Lỗi Database: {e}")
+        return None
     finally:
         if conn and conn.is_connected():
             cursor.close()
